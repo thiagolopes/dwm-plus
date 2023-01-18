@@ -103,6 +103,7 @@ struct Client {
 	char name[256];
 	float mina, maxa;
 	int x, y, w, h;
+        int sfx, sfy, sfw, sfh; /* stored float geometry, used on mode revert */
 	int oldx, oldy, oldw, oldh;
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
@@ -1254,6 +1255,11 @@ manage(Window w, XWindowAttributes *wa)
 	updatesizehints(c);
 	updatewmhints(c);
 
+        c->sfx = c->x;
+	c->sfy = c->y;
+	c->sfw = c->w;
+	c->sfh = c->h;
+
         /* preserve positions in each tag */
         {
 		int format;
@@ -2053,8 +2059,16 @@ togglefloating(const Arg *arg)
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
 	if (selmon->sel->isfloating)
-		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
-			selmon->sel->w, selmon->sel->h, 0);
+                /*restore last known float dimensions*/
+		resize(selmon->sel, selmon->sel->sfx, selmon->sel->sfy,
+			selmon->sel->sfw, selmon->sel->sfh, 0);
+        else {
+		/*save last known float dimensions*/
+		selmon->sel->sfx = selmon->sel->x;
+		selmon->sel->sfy = selmon->sel->y;
+		selmon->sel->sfw = selmon->sel->w;
+		selmon->sel->sfh = selmon->sel->h;
+	}
 	arrange(selmon);
 }
 
@@ -2128,7 +2142,7 @@ unmanage(Client *c, int destroyed)
 void
 unmapnotify(XEvent *e)
 {
-	Client *c;
+        Client *c;
 	XUnmapEvent *ev = &e->xunmap;
 
 	if ((c = wintoclient(ev->window))) {
