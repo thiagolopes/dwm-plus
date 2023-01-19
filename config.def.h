@@ -30,16 +30,16 @@ static const char *colors[][3]      = {
 /* static const char col_cyan[]        = "#0066FF"; */
 
 static const char *const autostart[] = {
-        "nitrogen", " --restore", NULL,
-        "redshift", " -l", " -23:-47", NULL,
+        "nitrogen", "--restore", NULL,
+        "redshift", "-l -23:-47", NULL,
         "picom", NULL,
         "natural-scroll", NULL,
         "octoxbps-notifier", NULL,
-        "xset", " r", " rate 300 50", NULL,
-        "autorandr", " --change 144hz", NULL,
-        "transmission-gtk", " -m", NULL,
+        "autorandr", "--change 144hz", NULL,
+        "transmission-gtk", "-m", NULL,
         "copyq", NULL,
         "dunst", NULL,
+        "xiccd", NULL,
 	NULL
 };
 
