@@ -202,6 +202,7 @@ static void focus(Client *c);
 static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
+static void fullscreen(const Arg *arg);
 static void gap_copy(Gap *to, const Gap *from);
 static Atom getatomprop(Client *c, Atom prop);
 static int getrootptr(int *x, int *y);
@@ -1047,6 +1048,20 @@ focusstack(const Arg *arg)
 		focus(c);
 		restack(selmon);
 	}
+}
+
+void
+fullscreen(const Arg *arg)
+{
+        static Layout *last_layout;
+
+	if (selmon->showbar) {
+		for(last_layout = (Layout *)layouts; last_layout != selmon->lt[selmon->sellt]; last_layout++);
+		setlayout(&((Arg) { .v = &layouts[2] }));
+	} else {
+		setlayout(&((Arg) { .v = last_layout }));
+	}
+	togglebar(arg);
 }
 
 Atom
