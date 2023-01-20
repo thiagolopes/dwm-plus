@@ -32,16 +32,16 @@ static const char *colors[][3]      = {
 };
 
 static const char *const autostart[] = {
-        "nitrogen", " --restore", NULL,
-        "picom", NULL,
-        "natural-scroll", NULL,
-        "octoxbps-notifier", NULL,
-        "autorandr", " --change 144hz", NULL,
-        "transmission-gtk", " -m", NULL,
-        "copyq", NULL,
-        "dunst", NULL,
-        "xiccd", NULL,
-        "nm-applet", NULL,
+	"nitrogen", " --restore", NULL,
+	"picom", NULL,
+	"natural-scroll", NULL,
+	"octoxbps-notifier", NULL,
+	"autorandr", " --change 144hz", NULL,
+	"transmission-gtk", " -m", NULL,
+	"copyq", NULL,
+	"dunst", NULL,
+	"xiccd", NULL,
+	"nm-applet", NULL,
 	NULL
 };
 
@@ -53,13 +53,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class              instance    title                 tags mask     isfloating   monitor */
-	{ "Gimp",             NULL,       NULL,                 0,            1,           -1 },
-	{ "Firefox",          NULL,       NULL,                 1 << 8,       0,           -1 },
-        { "Telegram",         NULL,       NULL,                 0,            1,           -1 },
-        { "Transmission",     NULL,       NULL,                 0,            1,           -1 },
-        { "zoom",             NULL,       NULL,                 0,            1,           -1 },
-        { "Firefox",          "Toolkit",  "Picture-in-Picture", 0,            1,           -1 },
+	/* class	      instance	  title			tags mask     isfloating   monitor */
+	{ "Gimp",	      NULL,	  NULL,			0,	      1,	   -1 },
+	{ "Firefox",	      NULL,	  NULL,			1 << 8,	      0,	   -1 },
+	{ "Telegram",	      NULL,	  NULL,			0,	      1,	   -1 },
+	{ "Transmission",     NULL,	  NULL,			0,	      1,	   -1 },
+	{ "zoom",	      NULL,	  NULL,			0,	      1,	   -1 },
+	{ "Firefox",	      "Toolkit",  "Picture-in-Picture", 0,	      1,	   -1 },
 };
 
 /* layout(s) */
@@ -70,19 +70,19 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ "[]=",      tile },	 /* first entry is default */
+	{ "><>",      NULL },	 /* no layout function means floating behavior */
 	{ "[M]",      monocle },
-        { "[🪜]",     stairs },
+	{ "[🪜]",     stairs },
 };
 
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ MODKEY,			KEY,	  view,		  {.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask,		KEY,	  toggleview,	  {.ui = 1 << TAG} }, \
+	{ MODKEY|ShiftMask,		KEY,	  tag,		  {.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask|ShiftMask, KEY,	  toggletag,	  {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }

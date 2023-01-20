@@ -45,29 +45,29 @@
 #include "util.h"
 
 /* macros */
-#define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
-#define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
-#define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
-                               * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
-#define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
-#define LENGTH(X)               (sizeof X / sizeof X[0])
-#define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
-#define WIDTH(X)                ((X)->w + 2 * (X)->bw)
-#define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
-#define TAGMASK                 ((1 << LENGTH(tags)) - 1)
-#define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+#define BUTTONMASK		(ButtonPressMask|ButtonReleaseMask)
+#define CLEANMASK(mask)		(mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+#define INTERSECT(x,y,w,h,m)	(MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
+			       * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
+#define ISVISIBLE(C)		((C->tags & C->mon->tagset[C->mon->seltags]))
+#define LENGTH(X)		(sizeof X / sizeof X[0])
+#define MOUSEMASK		(BUTTONMASK|PointerMotionMask)
+#define WIDTH(X)		((X)->w + 2 * (X)->bw)
+#define HEIGHT(X)		((X)->h + 2 * (X)->bw)
+#define TAGMASK			((1 << LENGTH(tags)) - 1)
+#define TEXTW(X)		(drw_fontset_getwidth(drw, (X)) + lrpad)
 
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 /* XEMBED messages */
-#define XEMBED_EMBEDDED_NOTIFY      0
-#define XEMBED_WINDOW_ACTIVATE      1
-#define XEMBED_FOCUS_IN             4
-#define XEMBED_MODALITY_ON         10
-#define XEMBED_MAPPED              (1 << 0)
-#define XEMBED_WINDOW_ACTIVATE      1
+#define XEMBED_EMBEDDED_NOTIFY	    0
+#define XEMBED_WINDOW_ACTIVATE	    1
+#define XEMBED_FOCUS_IN		    4
+#define XEMBED_MODALITY_ON	   10
+#define XEMBED_MAPPED		   (1 << 0)
+#define XEMBED_WINDOW_ACTIVATE	    1
 #define XEMBED_WINDOW_DEACTIVATE    2
-#define VERSION_MAJOR               0
-#define VERSION_MINOR               0
+#define VERSION_MAJOR		    0
+#define VERSION_MINOR		    0
 #define XEMBED_EMBEDDED_VERSION (VERSION_MAJOR << 16) | VERSION_MINOR
 
 /* gaps */
@@ -107,7 +107,7 @@ struct Client {
 	char name[256];
 	float mina, maxa;
 	int x, y, w, h;
-        int sfx, sfy, sfw, sfh; /* stored float geometry, used on mode revert */
+	int sfx, sfy, sfw, sfh; /* stored float geometry, used on mode revert */
 	int oldx, oldy, oldw, oldh;
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
@@ -142,10 +142,10 @@ struct Monitor {
 	float mfact;
 	int nmaster;
 	int num;
-	int by;               /* bar geometry */
+	int by;		      /* bar geometry */
 	int mx, my, mw, mh;   /* screen size */
 	int wx, wy, ww, wh;   /* window area  */
-        Gap *gap;
+	Gap *gap;
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
@@ -168,7 +168,7 @@ typedef struct {
 	int monitor;
 } Rule;
 
-typedef struct Systray   Systray;
+typedef struct Systray	 Systray;
 struct Systray {
 	Window win;
 	Client *icons;
@@ -290,9 +290,9 @@ static Systray *systray = NULL;
 static const char broken[] = "broken";
 static char stext[256];
 static int screen;
-static int sw, sh;           /* X display screen geometry width, height */
-static int bh;               /* bar height */
-static int lrpad;            /* sum of left and right padding for text */
+static int sw, sh;	     /* X display screen geometry width, height */
+static int bh;		     /* bar height */
+static int lrpad;	     /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
 static void (*handler[LASTEvent]) (XEvent *) = {
@@ -370,8 +370,8 @@ applyrules(Client *c)
 	c->isfloating = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
-	class    = ch.res_class ? ch.res_class : broken;
-	instance = ch.res_name  ? ch.res_name  : broken;
+	class	 = ch.res_class ? ch.res_class : broken;
+	instance = ch.res_name	? ch.res_name  : broken;
 
 	for (i = 0; i < LENGTH(rules); i++) {
 		r = &rules[i];
@@ -780,10 +780,10 @@ createmon(void)
 	m->showbar = showbar;
 	m->topbar = topbar;
 
-        /* gaps */
-        m->gap = malloc(sizeof(Gap));
+	/* gaps */
+	m->gap = malloc(sizeof(Gap));
 	gap_copy(m->gap, &default_gap);
-        
+	
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
@@ -852,9 +852,9 @@ drawbar(Monitor *m)
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
-        /* fancy bar */
-        int mw, ew = 0;
-        unsigned int n = 0;
+	/* fancy bar */
+	int mw, ew = 0;
+	unsigned int n = 0;
 
 	if (!m->showbar)
 		return;
@@ -874,10 +874,10 @@ drawbar(Monitor *m)
 		occ |= c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
-                /* fancy bar */
-                /* determine the number of clients visible */
-                if (ISVISIBLE(c))
-                  n++;
+		/* fancy bar */
+		/* determine the number of clients visible */
+		if (ISVISIBLE(c))
+		  n++;
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
@@ -894,7 +894,7 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
-        /* draw bar infomarton spacing clinents to fit */
+	/* draw bar infomarton spacing clinents to fit */
 	if ((w = m->ww - tw - stw - x) > bh) {
 		if (n > 0) {
 			tw = TEXTW(m->sel->name) + lrpad;
@@ -928,7 +928,7 @@ drawbar(Monitor *m)
 			}
 		}
 		drw_setscheme(drw, scheme[SchemeNorm]);
-		drw_rect(drw, x, 0, w, bh, 1, 1);          
+		drw_rect(drw, x, 0, w, bh, 1, 1);	   
 	
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww - stw, bh);
@@ -1053,11 +1053,11 @@ focusstack(const Arg *arg)
 void
 fullscreen(const Arg *arg)
 {
-        static Layout *last_layout;
+	static Layout *last_layout;
 
 	if (selmon->showbar) {
 		for(last_layout = (Layout *)layouts;
-                    last_layout != selmon->lt[selmon->sellt]; last_layout++);
+		    last_layout != selmon->lt[selmon->sellt]; last_layout++);
 		setlayout(&((Arg) { .v = &layouts[2] }));
 	} else {
 		setlayout(&((Arg) { .v = last_layout }));
@@ -1292,13 +1292,13 @@ manage(Window w, XWindowAttributes *wa)
 	updatesizehints(c);
 	updatewmhints(c);
 
-        c->sfx = c->x;
+	c->sfx = c->x;
 	c->sfy = c->y;
 	c->sfw = c->w;
 	c->sfh = c->h;
 
-        /* preserve positions in each tag */
-        {
+	/* preserve positions in each tag */
+	{
 		int format;
 		unsigned long *data, n, extra;
 		Monitor *m;
@@ -1317,7 +1317,7 @@ manage(Window w, XWindowAttributes *wa)
 			XFree(data);
 	}
 	setclienttagprop(c);
-        
+	
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
 	if (!c->isfloating)
@@ -1741,7 +1741,7 @@ sendmon(Client *c, Monitor *m)
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
 	attach(c);
 	attachstack(c);
-        setclienttagprop(c);
+	setclienttagprop(c);
 	focus(NULL);
 	arrange(NULL);
 }
@@ -1929,7 +1929,7 @@ setup(void)
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
 	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
-       	netatom[NetClientInfo] = XInternAtom(dpy, "_NET_CLIENT_INFO", False);
+	netatom[NetClientInfo] = XInternAtom(dpy, "_NET_CLIENT_INFO", False);
 	xatom[Manager] = XInternAtom(dpy, "MANAGER", False);
 	xatom[Xembed] = XInternAtom(dpy, "_XEMBED", False);
 	xatom[XembedInfo] = XInternAtom(dpy, "_XEMBED_INFO", False);
@@ -1958,7 +1958,7 @@ setup(void)
 	XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
 		PropModeReplace, (unsigned char *) netatom, NetLast);
 	XDeleteProperty(dpy, root, netatom[NetClientList]);
-       	XDeleteProperty(dpy, root, netatom[NetClientInfo]);
+	XDeleteProperty(dpy, root, netatom[NetClientInfo]);
 	/* select events */
 	wa.cursor = cursor[CurNormal]->cursor;
 	wa.event_mask = SubstructureRedirectMask|SubstructureNotifyMask
@@ -2004,7 +2004,7 @@ showhide(Client *c)
 void
 sigchld(int unused)
 {
-        pid_t pid;
+	pid_t pid;
   
 	if (signal(SIGCHLD, sigchld) == SIG_ERR)
 		die("can't install SIGCHLD handler:");
@@ -2021,7 +2021,7 @@ sigchld(int unused)
 				break;
 			}
 		}
-        }
+	}
 }
 
 void
@@ -2049,12 +2049,12 @@ setclienttagprop(Client *c)
 void
 tag(const Arg *arg)
 {
-        Client *c;
+	Client *c;
   
 	if (selmon->sel && arg->ui & TAGMASK) {
-                c = selmon->sel;
+		c = selmon->sel;
 		selmon->sel->tags = arg->ui & TAGMASK;
-           	setclienttagprop(c);
+		setclienttagprop(c);
 		focus(NULL);
 		arrange(selmon);
 	}
@@ -2212,10 +2212,10 @@ togglefloating(const Arg *arg)
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
 	if (selmon->sel->isfloating)
-                /*restore last known float dimensions*/
+		/*restore last known float dimensions*/
 		resize(selmon->sel, selmon->sel->sfx, selmon->sel->sfy,
 			selmon->sel->sfw, selmon->sel->sfh, 0);
-        else {
+	else {
 		/*save last known float dimensions*/
 		selmon->sel->sfx = selmon->sel->x;
 		selmon->sel->sfy = selmon->sel->y;
@@ -2235,7 +2235,7 @@ toggletag(const Arg *arg)
 	newtags = selmon->sel->tags ^ (arg->ui & TAGMASK);
 	if (newtags) {
 		selmon->sel->tags = newtags;
-            	setclienttagprop(selmon->sel);
+		setclienttagprop(selmon->sel);
 		focus(NULL);
 		arrange(selmon);
 	}
@@ -2295,7 +2295,7 @@ unmanage(Client *c, int destroyed)
 void
 unmapnotify(XEvent *e)
 {
-        Client *c;
+	Client *c;
 	XUnmapEvent *ev = &e->xunmap;
 
 	if ((c = wintoclient(ev->window))) {
@@ -2586,7 +2586,7 @@ updatesystray(void)
 		if (!(systray = (Systray *)calloc(1, sizeof(Systray))))
 			die("fatal: could not malloc() %u bytes\n", sizeof(Systray));
 		systray->win = XCreateSimpleWindow(dpy, root, x, m->by, w, bh, 0, 0, scheme[SchemeSel][ColBg].pixel);
-		wa.event_mask        = ButtonPressMask | ExposureMask;
+		wa.event_mask	     = ButtonPressMask | ExposureMask;
 		wa.override_redirect = True;
 		wa.background_pixel  = scheme[SchemeNorm][ColBg].pixel;
 		XSelectInput(dpy, systray->win, SubstructureNotifyMask);
