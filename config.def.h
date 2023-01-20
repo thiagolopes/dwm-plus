@@ -17,29 +17,31 @@ static const int bar_height         = 4;        /* 2 is the default spacing arou
 static const Gap default_gap        = {.isgap = 1, .realgap = 0, .gappx = 10};
 static const char *fonts[]          = { "Hack:size=11" };
 static const char dmenufont[]       = "Hack:size=11";
-static const char col_gray1[]       = "#CCCCCC";
+static const char col_gray1[]       = "#0f1011";
 static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#222222";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_gray3[]       = "#AAAAAA";
+static const char col_gray4[]       = "#ffffff";
+static const char col_cyan[]        = "#CC2229";
+static const char sel_boder[]       = "#8a171c";
+static const char col_urgborder[]   = "#19049C";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeSel]  = { col_gray4, col_cyan,  sel_boder  },
+        [SchemeUrg]  = { col_gray4, col_cyan,  col_urgborder  },
 };
-/* static const char col_cyan[]        = "#0066FF"; */
 
 static const char *const autostart[] = {
-        "nitrogen", "--restore", NULL,
-        "redshift", "-l -23:-47", NULL,
+        "nitrogen", " --restore", NULL,
         "picom", NULL,
         "natural-scroll", NULL,
         "octoxbps-notifier", NULL,
-        "autorandr", "--change 144hz", NULL,
-        "transmission-gtk", "-m", NULL,
+        "autorandr", " --change 144hz", NULL,
+        "transmission-gtk", " -m", NULL,
         "copyq", NULL,
         "dunst", NULL,
         "xiccd", NULL,
+        "nm-applet", NULL,
 	NULL
 };
 
@@ -71,7 +73,7 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
-        { "[🪜]",      stairs },
+        { "[🪜]",     stairs },
 };
 
 /* key definitions */
